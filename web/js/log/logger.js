@@ -30,6 +30,7 @@ var log = window.log = (function() {
         return loggerByCategory[category];
     };
 
+    // 需要控制 显示什么级别的日志，并且控制是否显示日志
     return function(msg, level, category) {
         // default parameters
         if (!level) {
@@ -38,7 +39,10 @@ var log = window.log = (function() {
         if (!category) {
             category = 'hsw.core.Logger';
         }
-        getLogger(category)[level](msg);
+
+        if(baseParam.app.logger){
+            getLogger(category)[level](msg);
+        }
     };
 })();
 
@@ -64,3 +68,6 @@ log.logger = function(category) {
         }
     };
 };
+
+// 用法： 先绑定类：hsw.cmd.Manager.prototype.logger = log.logger('hsw.cmd.Manager');
+// 然后在这个类下进行日志的统计：this.logger.info('suspend cmd:' + current.type);

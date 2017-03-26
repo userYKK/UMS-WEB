@@ -33,7 +33,7 @@ var appPromise = {
         }
     },
     'ajaxLog': function () { //加载日志模块
-        if (this.app && this.app.logger) {
+        if (this.app) {
             this.quickLoad.push(
                 $.ajax({
                     url: this.app.log,
