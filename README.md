@@ -8,6 +8,12 @@
 1. **doc** <br>
     - 存放参考的3个web模版
 
+2. **web** <br>
+    - config    存放全局参数
+    - extplugin 第三方js库
+    - log       日志模块
+    - promise   存放异步请求，app是项目文件加载, server 是请求数据接口
+    - test      测试的js
 
 >     问题
 

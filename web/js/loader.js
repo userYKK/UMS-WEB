@@ -8,26 +8,39 @@
  *
  */
 
-var baseParam = {
+/**
+ *  全局参数控制的变量
+ * @type {{coreconfigPath: string, promisePath: string[]}}
+ */
+var base = {
     'coreconfigPath':'js/config/coreparam.config',
     'promisePath':['js/promise/app.js','js/promise/server.js']
 };
 
-window.onload = function(){
-    load();
+$(function(){
+    new loader().init(base);
+});
+
+/**
+ *   加载器类
+ */
+var loader = function(){
 };
 
-// 总的启动器
-function load(){
-    loadConfigParams();
-    loadPromiseConfig();
-}
+/**
+ *  首先加载必须的文件
+ * @param fobj
+ */
+loader.prototype.init = function (fobj) {
+    this._loadConfigParams(fobj);
+    this._loadPromiseConfig(fobj);
+};
 
 /**
  *  加载 config 下面的配置的 .config 的json文件，需要过滤注释
  */
-function loadConfigParams(){
-    var url = baseParam.coreconfigPath;
+loader.prototype._loadConfigParams = function(fobj){
+    var url = fobj.coreconfigPath;
     var tempPromise = $.ajax({
         type: 'GET',
         url: url,
@@ -43,15 +56,15 @@ function loadConfigParams(){
         var param = data.replace(reg, function (word) { // 去除注释后的文本
             return /^\/{2,}/.test(word) || /^\/\*/.test(word) ? "" : word;
         });
-        $.extend(baseParam, JSON.parse(param));
+        $.extend(fobj, JSON.parse(param));
     });
-}
+};
 
 /**
  *  加载 promise 文件
  */
-function loadPromiseConfig(){
-    var urls = baseParam.promisePath;
+loader.prototype._loadPromiseConfig = function(fobj){
+    var urls = fobj.promisePath;
     var tempPromises = [];
     for (var i = 0; i < urls.length; i++) {
         // 需要设置同步，否则异步控制不了完成后的数据参数的植入
@@ -69,11 +82,12 @@ function loadPromiseConfig(){
     // when 加载直接使用 promise 数组
     $.when(tempPromises).then(function(data){
         // 开始进行所有的加载 app 文件 , 设置 app  和 server 中的参数
-        appPromise.app = baseParam.app;
-        console.info(appPromise);
-        appPromise.run();
+        var temp = new appPromise();
+        temp.app = fobj.app;
+        temp.init();
+        fobj.appPromise = temp; // appPromise实例存放在全局中
     });
-}
+};
 
 
 // 加载需要的文件

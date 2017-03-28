@@ -7,6 +7,30 @@
  * @file
  *
  */
+
+
+
+/**
+ *  信息在 ErrorEvent 对象中，不一定是下面列举的名称
+ *  错误信息不会在浏览的控制台中进行显示
+ * @param {String}  errorMessage   错误信息
+ * @param {String}  scriptURI      出错的文件
+ * @param {Long}    lineNumber     出错代码的行号
+ * @param {Long}    columnNumber   出错代码的列号
+ * @param {Object}  errorObj       错误的详细信息，Anything
+ */
+/*
+var fn = window.onerror = function() {
+    //errorMessage, scriptURI, lineNumber,columnNumber,errorObj
+    console.log(arguments);
+    // 控制信息不显示
+    return true;
+};
+window.addEventListener("error", fn);
+window.addEventListener("error", fn);
+*/
+
+
 var LogLevelEnum = {
     // the value is method name of goog.debug.Logger
     info: 'info',
@@ -40,11 +64,26 @@ var log = window.log = (function() {
             category = 'hsw.core.Logger';
         }
 
-        if(baseParam.app.logger){
+        if(base.app.logger){
             getLogger(category)[level](msg);
         }
     };
 })();
+
+log.init = function(){
+    alert(2);
+    return true;
+};
+
+/*log.init = window.onerror = function() {
+    alert(2);
+    //errorMessage, scriptURI, lineNumber,columnNumber,errorObj
+    console.log(arguments);
+    // 控制信息不显示
+    return true;
+};*/
+/*window.addEventListener("error", fn);
+window.addEventListener("error", fn);*/
 
 // shortcuts
 log.info = function(msg, category) {
