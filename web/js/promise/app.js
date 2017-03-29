@@ -29,7 +29,9 @@ appPromise.prototype.init = function(fobj){
         $.when(appPromise[i]);
     }
     for (var i = 0; i < this.safeLoad.length; i++) {
-        $.when(appPromise[i]);
+        $.when(appPromise[i]).done(function(data){
+            console.info(data);
+        });
     }
 
     var a = {};

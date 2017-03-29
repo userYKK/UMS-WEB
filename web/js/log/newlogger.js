@@ -17,22 +17,22 @@ var log = function () {
         'info':'info',
         'warning': 'warning'
     };
+    this.assert = undefined; // 会使用到断言，需要将全局的断言对象传递进来
 };
 
 /**
- *  显示断言信息
- * @param statement 是成功还是失败 true & false
- * @param msg
+ *  初始化
+ * @param fobj  全局参数控制的变量
  */
-log.prototype.assert = function(statement, msg){
-    console.assert(statement, msg);
+log.prototype.init = function(fobj){
+    this.assert = fobj.assert;
 };
 
 /**
  * 显示/存储日志等信息 --- 这个写法是暂时的
- * @param msg
- * @param level
- * @param category
+ * @param msg 信息
+ * @param level  日志级别
+ * @param category 类目-- 暂时没限定使用方式
  * @returns {Function}
  */
 log.prototype.show = function (msg, level, category) {
@@ -63,9 +63,7 @@ log.prototype.info = function (msg, category) {
 log.prototype.warning = function (msg, category) {
     this.show(msg,this.logLevelEnum.warning,category);
 };
-log.prototype.error = function (msg, category) {
 
-};
 
 log.prototype.logger = function (msg, category) {
     return {
@@ -76,19 +74,15 @@ log.prototype.logger = function (msg, category) {
             return this.warning(msg, category);
         },
         error: function(msg) {
-            return assert.error(msg);
+            return this.assert.error(msg);
         }
     };
 };
-
-
-
 
 /**
  *  断言类
  */
 var assert = function(){
-
 };
 
 /**

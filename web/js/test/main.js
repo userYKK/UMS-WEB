@@ -20,7 +20,8 @@ test.init = function(){
     //test.load.t2();
 
     // 日志测试
-    this.log.windowError();
+    this.log.struct();
+    //this.log.windowError();
 };
 
 
@@ -52,6 +53,10 @@ test.load = {
  *  @type {{windowError: Function}}
  */
 test.log = {
+    'struct':function(){ // 测试log中的结构
+        var loggerTemp = new log();
+        console.info(loggerTemp);
+    },
     'windowError':function(){ // 测试控制全局的error事件，在 log 模块中进行绑定
         var a = {};
         // 这里触发报错
