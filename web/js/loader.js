@@ -83,9 +83,7 @@ loader.prototype._loadPromiseConfig = function(fobj){
     $.when(tempPromises).then(function(data){
         // 开始进行所有的加载 app 文件 , 设置 app  和 server 中的参数
         var temp = new appPromise();
-        temp.app = fobj.app;
-        temp.init();
-        fobj.appPromise = temp; // appPromise实例存放在全局中
+        temp.init(fobj);
     });
 };
 

@@ -49,7 +49,7 @@ test.load = {
 
 /**
  *  日志的测试部分
- * @type {{windowError: Function}}
+ *  @type {{windowError: Function}}
  */
 test.log = {
     'windowError':function(){ // 测试控制全局的error事件，在 log 模块中进行绑定

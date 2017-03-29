@@ -15,8 +15,12 @@ var appPromise = function(){
 
 /**
  *  初始化, 类级别的总体控制,拼装所有的异步请求，并且进行加载
+ * @param fobj  全局参数控制的变量
  */
-appPromise.prototype.init = function(){
+appPromise.prototype.init = function(fobj){
+    this.app = fobj.app;
+    fobj.appPromise = this; // appPromise实例存放在全局中
+
     // 初始化运行modules
     for(var module in this.modules){
         this.modules[module](this);
@@ -29,7 +33,7 @@ appPromise.prototype.init = function(){
     }
 
     var a = {};
-    console.info(a.b.c);
+    // console.info(a.b.c);
 };
 
 /**
