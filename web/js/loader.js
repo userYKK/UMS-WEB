@@ -12,10 +12,7 @@
  *  全局参数控制的变量
  * @type {{coreconfigPath: string, promisePath: string[]}}
  */
-var base = {
-    'coreconfigPath':'js/config/coreparam.config',
-    'promisePath':['js/promise/app.js','js/promise/server.js']
-};
+var base = {};
 
 $(function(){
     new loader().init(base);
@@ -25,6 +22,11 @@ $(function(){
  *   加载器类
  */
 var loader = function(){
+    // 常量参数
+    this.staticParams = {
+        'coreconfigPath':'js/config/coreparam.config',
+        'promisePath':['js/promise/app.js','js/promise/server.js']
+    };
 };
 
 /**
@@ -33,6 +35,7 @@ var loader = function(){
  */
 loader.prototype.init = function (fobj) {
     this._loadConfigParams(fobj);
+    this._loadUtils(fobj);
     this._loadPromiseConfig(fobj);
 };
 
@@ -40,7 +43,7 @@ loader.prototype.init = function (fobj) {
  *  加载 config 下面的配置的 .config 的json文件，需要过滤注释
  */
 loader.prototype._loadConfigParams = function(fobj){
-    var url = fobj.coreconfigPath;
+    var url = this.staticParams.coreconfigPath;
     var tempPromise = $.ajax({
         type: 'GET',
         url: url,
@@ -61,10 +64,10 @@ loader.prototype._loadConfigParams = function(fobj){
 };
 
 /**
- *  加载 promise 文件
+ *  加载 utils 文件
  */
-loader.prototype._loadPromiseConfig = function(fobj){
-    var urls = fobj.promisePath;
+loader.prototype._loadUtils = function(fobj){
+    var urls = fobj.app.utils;
     var tempPromises = [];
     for (var i = 0; i < urls.length; i++) {
         // 需要设置同步，否则异步控制不了完成后的数据参数的植入
@@ -77,14 +80,29 @@ loader.prototype._loadPromiseConfig = function(fobj){
         });
         tempPromises.push(tempPromise);
     }
+    $.when(tempPromises);
+};
 
+/**
+ *  加载 promise 文件
+ */
+loader.prototype._loadPromiseConfig = function(fobj){
+    var urls = this.staticParams.promisePath;
+    var tempPromises = [];
+    for (var i = 0; i < urls.length; i++) {
+        // 需要设置同步，否则异步控制不了完成后的数据参数的植入
+        var tempPromise = $.ajax({
+            type: 'GET',
+            url: urls[i],
+            cache: true,
+            dataType: 'script',
+            async: false
+        });
+        tempPromises.push(tempPromise);
+    }
     alert(1);
     // when 加载直接使用 promise 数组
-    $.when(tempPromises).then(function(data){
-        // 开始进行所有的加载 app 文件 , 设置 app  和 server 中的参数
-        var temp = new appPromise();
-        temp.init(fobj);
-    });
+    $.when(tempPromises);
 };
 
 
