@@ -14,7 +14,9 @@
  */
 Object.prototype.getClassName = function() {
     var funcNameRegex = /function (.{1,})\(/;
-    var results = (funcNameRegex).exec((this).constructor.toString());
-    console.info((this).constructor);
+    var results = Object.prototype.toString.call(this).match(/\[object (.*?)\]/)[1]
+    //var results = (funcNameRegex).exec((this).constructor.toString());
+    //console.info(this);
+    //console.info(this.constructor.toString());
     return (results && results.length > 1) ? results[1] : "";
 };

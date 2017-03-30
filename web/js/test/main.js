@@ -11,7 +11,7 @@
 (function(){
 
     var test = function(){
-
+        this.base = undefined; // 全局变量
     };
 
     /**
@@ -42,31 +42,49 @@
      *  @type {{windowError: Function}}
      */
     test.prototype.log = {
-        'struct':function(){ // 测试log中的结构
-            alert(3);
-            var loggerTemp = new log();
+        /**
+         *  测试log中的结构,
+         * @param fobj 是test对象
+         */
+        'struct':function(fobj){
+            console.info(fobj);
+            var loggerTemp = fobj.base.log;
             console.info(loggerTemp);
         },
-        'windowError':function(){ // 测试控制全局的error事件，在 log 模块中进行绑定
+        /**
+         *  测试控制全局的error事件，在 log 模块中进行绑定
+         * @param fobj 是test对象
+         */
+        'windowError':function(fobj){
             var a = {};
             // 这里触发报错
             console.info(a.a.a);
+        },
+        /**
+         *  测试断言的 error 是否正确
+         * @param fobj 是test对象
+         */
+        'assert_error':function(fobj){
+            console.info(fobj);
+            fobj.base.assert.error("测试 错误信息");
         }
     };
     /**
      *  总的入口
      */
-    var init = function(){
-        // var temp = fobj.test = new appPromise(); // appPromise实例存放在全局中
+    var init = function(fobj){
+         var temp = fobj.test = new test(); // appPromise实例存放在全局中
+        temp.base = fobj;
 
-
+        console.info(fobj);
         // 异步加载 js 文件测试
-        //test.load.t1();
-        //test.load.t2();
+        //temp.load.t1();
+        //temp.load.t2();
 
         // 日志测试
-        this.log.struct();
-        //this.log.windowError();
+        //temp.log.struct(temp);
+        temp.log.windowError(temp);
+        //temp.log.assert_error(temp);
     };
 
     return init;

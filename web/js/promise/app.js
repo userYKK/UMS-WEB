@@ -41,7 +41,11 @@
      * @type {{ajaxExtPlugins: Function, ajaxLog: Function, ajaxTest: Function}}
      */
     appPromise.prototype.modules = {
-        'ajaxExtPlugins': function (fobj) { //加载第三方插件
+        /**
+         * 加载第三方插件
+         * @param fobj 是appPromise对象，this 获取到的是 modules，需要传入
+         */
+        'ajaxExtPlugins': function (fobj) {
             if (fobj.app) {
                 var pluginPaths = fobj.app.extplugins;
                 for (var i = 0; i < pluginPaths.length; i++) {
@@ -49,7 +53,11 @@
                 }
             }
         },
-        'ajaxLog': function (fobj) { //加载日志模块
+        /**
+         *  加载日志模块
+         * @param fobj
+         */
+        'ajaxLog': function (fobj) {
             if (fobj.app) {
                 var logPaths = fobj.app.log;
                 for (var i = 0; i < logPaths.length; i++) {
@@ -57,7 +65,11 @@
                 }
             }
         },
-        'ajaxTest': function (fobj) { //加载测试模块
+        /**
+         *  加载测试模块
+         * @param fobj
+         */
+        'ajaxTest': function (fobj) {
             if (fobj.app && fobj.app.tester) {
                 var testPaths = fobj.app.test;
                 for (var i = 0; i < testPaths.length; i++) {
@@ -73,9 +85,6 @@
      */
     var init =  function(fobj){
         var temp = fobj.appPromise = new appPromise(); // appPromise实例存放在全局中
-        console.info('---------');
-        var hehe = new appPromise();
-        console.info(hehe.getClassName());
         temp.app = fobj.app;
 
         // 初始化运行modules
@@ -90,7 +99,7 @@
         }
 
         var a = {};
-        // console.info(a.b.c);
+        //console.info(a.b.c);
     };
 
     return init;

@@ -31,13 +31,12 @@
         this.show(false, msg);
     };
 
-
     /**
      *  初始化
      * @param fobj  全局参数控制的变量
      */
     var init = function(fobj){
-        fobj.log = this; // appPromise实例存放在全局中
+        var temp = fobj.assert = new assert(); // assert实例存放在全局中
     };
 
     return init;

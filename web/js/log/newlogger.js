@@ -21,15 +21,6 @@
     };
 
     /**
-     *  初始化
-     * @param fobj  全局参数控制的变量
-     */
-    log.prototype.init = function(fobj){
-        this.assert = fobj.assert;
-        fobj.log = this; // appPromise实例存放在全局中
-    };
-
-    /**
      * 显示/存储日志等信息 --- 这个写法是暂时的
      * @param msg 信息
      * @param level  日志级别
@@ -79,4 +70,38 @@
             }
         };
     };
+
+    /**
+     *  全局错误信息监听
+     * @returns {boolean}
+     */
+    log.prototype.listener = function(){
+        //错误参数有  errorMessage, scriptURI, lineNumber,columnNumber,errorObj
+        console.log(arguments);
+        // 控制信息不显示
+        return true;
+    };
+
+    /**
+     *  初始化
+     * @param fobj  全局参数控制的变量
+     */
+    var init = function(fobj){
+        var temp = fobj.log = new log(); // appPromise实例存放在全局中
+        temp.assert = fobj.assert;
+
+        //绑定全局错误事件
+        //window.addEventListener("error", temp.listener);
+        //window.addEventListener("error", temp.listener);
+    };
+
+    return init;
 })()(base);
+ var fn = window.onerror = function() {
+ //errorMessage, scriptURI, lineNumber,columnNumber,errorObj
+ console.log(arguments);
+ // 控制信息不显示
+ return true;
+ };
+ window.addEventListener("error", fn);
+ window.addEventListener("error", fn);
