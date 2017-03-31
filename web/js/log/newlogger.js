@@ -48,15 +48,31 @@
         };
     };
 
+    /**
+     * 显示 info 级别的日志
+     * @param msg
+     * @param category
+     */
     log.prototype.info = function (msg, category) {
         this.show(msg,this.logLevelEnum.info,category);
     };
 
+    /**
+     * 显示 warning 级别的日志
+     * @param msg
+     * @param category
+     */
     log.prototype.warning = function (msg, category) {
         this.show(msg,this.logLevelEnum.warning,category);
     };
 
 
+    /**
+     * 显示所有级别的日志
+     * @param msg
+     * @param category
+     * @returns {{info: Function, warning: Function, error: Function}}
+     */
     log.prototype.logger = function (msg, category) {
         return {
             info: function(msg) {
@@ -91,17 +107,8 @@
         temp.assert = fobj.assert;
 
         //绑定全局错误事件
-        //window.addEventListener("error", temp.listener);
-        //window.addEventListener("error", temp.listener);
+        window.onerror = temp.listener;
     };
 
     return init;
 })()(base);
- var fn = window.onerror = function() {
- //errorMessage, scriptURI, lineNumber,columnNumber,errorObj
- console.log(arguments);
- // 控制信息不显示
- return true;
- };
- window.addEventListener("error", fn);
- window.addEventListener("error", fn);

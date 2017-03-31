@@ -58,7 +58,7 @@
         'windowError':function(fobj){
             var a = {};
             // 这里触发报错
-            console.info(a.a.a);
+            //console.info(a.a.a);
         },
         /**
          *  测试断言的 error 是否正确
